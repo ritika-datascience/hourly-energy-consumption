@@ -10,7 +10,15 @@ st.set_page_config(
 )
 
 # Load model
-model = joblib.load("random_forest_model.pkl")
+import gzip
+import shutil
+import joblib
+import os
+if not os.path.exists("random_forest_model.pkl"):
+    with gzip.open("random_forest_model.pkl.gz","rb") as f_in:
+        with open("random_forest_model.pkl","wb") as f_out:
+            shutil.copyfileobj(f_in, f_out)
+    model = joblib.load("random_forest_model.pkl")
 
 # Load forecast
 forecast = pd.read_csv("30_day_energy_forecast.csv")
